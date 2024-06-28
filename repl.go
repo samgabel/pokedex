@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/samgabel/pokedex/internal/commands"
+	"github.com/samgabel/pokedex/internal/pokeapi"
 )
 
 const (
@@ -19,6 +21,11 @@ const (
 func startRepl(cfg *commands.Config) {
 	// create a new scanner
 	scanner := bufio.NewScanner(os.Stdin)
+
+	// create new pokeapi.Client (http.Client)
+	cfg.PokeapiClient = pokeapi.NewClient(time.Second * 5)
+
+	// enter into REPL (infinite loop)
 	for {
 		fmt.Printf("%sPokedex > %s", red, reset)
 

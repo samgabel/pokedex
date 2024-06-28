@@ -8,7 +8,7 @@ import (
 
 func commandMapf(cfg *Config) error {
 	// make a call to the pokeapi
-	data, err := cfg.pokeapiClient.GetLocations(cfg.nextLocationURL)
+	data, err := cfg.PokeapiClient.GetLocations(cfg.nextLocationURL)
 	if err != nil {
 		return err
 	}
@@ -32,7 +32,7 @@ func commandMapf(cfg *Config) error {
 }
 
 func commandMapb(cfg *Config) error {
-	data, err := cfg.pokeapiClient.GetLocations(cfg.previousLocationURL)
+	data, err := cfg.PokeapiClient.GetLocations(cfg.previousLocationURL)
 	if err != nil {
 		return err
 	}

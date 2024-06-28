@@ -1,7 +1,10 @@
 package main
 
-import "github.com/samgabel/pokedex/internal/commands"
+import (
+	"github.com/samgabel/pokedex/internal/commands"
+)
 
 func main() {
-	startRepl(&commands.Config{})
+	cfg := &commands.Config{}
+	startRepl(cfg)
 }
