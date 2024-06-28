@@ -1,23 +1,16 @@
-package main
+package commands
 
 import (
 	"fmt"
-	"os"
 )
 
-func helpCommand() error {
+func commandHelp(cfg *Config) error {
 	fmt.Println("-----------------------")
 	fmt.Println("Welcome to Pokedex REPL")
 	fmt.Println("-----------------------")
-	for _, cmd := range getCommands() {
+	for _, cmd := range GetCommands() {
 		fmt.Println(cmd.name, "	", cmd.description)
 	}
 
 	return nil
 }
-
-func exitCommand() error {
-	os.Exit(0)
-	return nil
-}
-

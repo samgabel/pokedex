@@ -8,3 +8,6 @@ build:
 
 test:
 	go test . -test.v
+
+format:
+	gofmt -w -d .

@@ -5,14 +5,22 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/samgabel/pokedex/internal/commands"
 )
 
-// Starts up a REPL session that takes in user input and returns the input.
-func startRepl() {
+const (
+	red    string = "\033[31m"       // ANSI escape code for red
+	yellow string = "\033[38;5;226m" // ANSI escape code for yellow
+	reset  string = "\033[0m"        // Reset color
+)
+
+// Starts up a REPL session
+func startRepl(cfg *commands.Config) {
 	// create a new scanner
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
-		fmt.Print("Pokedex > ")
+		fmt.Printf("%sPokedex > %s", red, reset)
 
 		// `.Scan()` will block until `.Text()` is called
 		// returns false when reached the end of input or an error
@@ -30,11 +38,11 @@ func startRepl() {
 		inputCommand := input[0]
 
 		// execute command
-		command, exists := getCommands()[inputCommand]
+		command, exists := commands.GetCommands()[inputCommand]
 		if exists {
-			command.callback()
+			command.Callback(cfg)
 		} else {
-			fmt.Printf("'%v' is an invalid command", inputCommand)
+			fmt.Printf("%s%v%s is an invalid command", yellow, inputCommand, reset)
 			fmt.Println()
 		}
 
@@ -49,25 +57,3 @@ func cleanInput(input string) []string {
 	stringLower := strings.ToLower(input)
 	return strings.Fields(stringLower)
 }
-
-type cliCommand struct {
-	name        string
-	description string
-	callback    func() error
-}
-
-func getCommands() map[string]cliCommand {
-	return map[string]cliCommand{
-		"help": {
-			name:        "help",
-			description: "Displays the help message",
-			callback:    helpCommand,
-		},
-		"exit": {
-			name:        "exit",
-			description: "Exits the REPL program",
-			callback:    exitCommand,
-		},
-	}
-}
-

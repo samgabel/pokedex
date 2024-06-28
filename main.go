@@ -1,6 +1,7 @@
 package main
 
-func main() {
-	startRepl()
-}
+import "github.com/samgabel/pokedex/internal/commands"
 
+func main() {
+	startRepl(&commands.Config{})
+}
