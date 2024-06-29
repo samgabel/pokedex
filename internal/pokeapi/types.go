@@ -1,9 +1,15 @@
 package pokeapi
 
-import "net/http"
+import (
+	"net/http"
 
+	"github.com/samgabel/pokedex/internal/pokecache"
+)
+
+// This struct handles our requests as well as our caching of said requests
 type Client struct {
 	httpClient http.Client
+	cache      pokecache.Cache
 }
 
 type locationObj struct {

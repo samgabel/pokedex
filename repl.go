@@ -19,11 +19,12 @@ const (
 
 // Starts up a REPL session
 func startRepl(cfg *commands.Config) {
+
 	// create a new scanner
 	scanner := bufio.NewScanner(os.Stdin)
 
-	// create new pokeapi.Client (http.Client)
-	cfg.PokeapiClient = pokeapi.NewClient(time.Second * 5)
+	// create new pokeapi.Client (http.Client and pokecache.Cache)
+	cfg.PokeapiClient = pokeapi.NewClient(time.Second*5, time.Minute*3)
 
 	// enter into REPL (infinite loop)
 	for {

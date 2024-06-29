@@ -16,6 +16,11 @@ func (c *Client) GetLocations(path *string) (locationObj, error) {
 		currentURL = *path
 	}
 
+	// check cache for path
+	if body, ok := c.cache.Get(currentURL); ok {
+		return unmarshalBody(body)
+	}
+
 	// construct request
 	req, err := http.NewRequest("GET", currentURL, nil)
 	if err != nil {
@@ -39,6 +44,13 @@ func (c *Client) GetLocations(path *string) (locationObj, error) {
 		return locationObj{}, err
 	}
 
+	// add to cache
+	c.cache.Add(currentURL, body)
+
+	return unmarshalBody(body)
+}
+
+func unmarshalBody(body []byte) (locationObj, error) {
 	// unmarshal the raw data into the `locationObj` struct
 	data := locationObj{}
 	errs := json.Unmarshal(body, &data)
@@ -46,6 +58,5 @@ func (c *Client) GetLocations(path *string) (locationObj, error) {
 		return locationObj{}, errs
 	}
 
-	// return
 	return data, nil
 }
