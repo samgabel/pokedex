@@ -19,3 +19,4 @@ func NewClient(httpTimeout, cacheTTL time.Duration) Client {
 		cache: pokecache.NewCache(cacheTTL),
 	}
 }
+

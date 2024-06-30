@@ -4,7 +4,7 @@ package commands
 type cliCommand struct {
 	name        string
 	description string
-	Callback    func(*Config) error
+	Callback    func(*Config, string) error
 }
 
 // This is a manifesto of all the commands available on the REPL.
@@ -13,23 +13,28 @@ func GetCommands() map[string]cliCommand {
 	return map[string]cliCommand{
 		"help": {
 			name:        "help",
-			description: "Displays the help message",
+			description: "		Displays the help message",
 			Callback:    commandHelp,
 		},
 		"exit": {
 			name:        "exit",
-			description: "Exits the REPL program",
+			description: "		Exits the REPL program",
 			Callback:    commandExit,
 		},
 		"map": {
 			name:        "map",
-			description: "Will display 20 location areas in the Pokemon world, with each subsequent call to `map` fetching the next 20",
+			description: "		Will display 20 location areas in the Pokemon world, with each subsequent call to `map` fetching the next 20",
 			Callback:    commandMapf,
 		},
 		"mapb": {
 			name:        "mapb",
-			description: "Stands for 'map back', does what map does but in reverse",
+			description: "		Stands for 'map back', does what map does but in reverse",
 			Callback:    commandMapb,
+		},
+		"explore": {
+			name:        "explore",
+			description: "	Requires an input paramter of a location-area (can be found in a 'map' command), returns a list of pokemon types",
+			Callback:    commandExplore,
 		},
 	}
 }

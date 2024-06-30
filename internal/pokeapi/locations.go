@@ -1,11 +1,6 @@
 package pokeapi
 
-import (
-	"encoding/json"
-	"errors"
-	"io"
-	"net/http"
-)
+import "encoding/json"
 
 // We request the PokeAPI for location data and unmarshal it into a locationObj struct.
 // Meant to be used by the mpas commands to print out "location-area" data.
@@ -16,30 +11,19 @@ func (c *Client) GetLocations(path *string) (locationObj, error) {
 		currentURL = *path
 	}
 
-	// check cache for path
+	// check cache for path, unmarshal and return early if so
 	if body, ok := c.cache.Get(currentURL); ok {
-		return unmarshalBody(body)
+		data := locationObj{}
+		err := json.Unmarshal(body, &data)
+		if err != nil {
+			return locationObj{}, err
+		}
+
+		return data, nil
 	}
 
-	// construct request
-	req, err := http.NewRequest("GET", currentURL, nil)
-	if err != nil {
-		return locationObj{}, err
-	}
-
-	// "do" GET request
-	res, err := c.httpClient.Do(req)
-	if err != nil {
-		return locationObj{}, err
-	}
-
-	// get response body
-	// a call to res.Body is streamed on demand and as such needs to be closed -> res.Body.Close()
-	body, err := io.ReadAll(res.Body)
-	res.Body.Close()
-	if res.StatusCode > 299 {
-		return locationObj{}, errors.New("Invalid Status Code greater than 299")
-	}
+	// get body
+	body, err := c.getResponseBody(currentURL)
 	if err != nil {
 		return locationObj{}, err
 	}
@@ -47,15 +31,11 @@ func (c *Client) GetLocations(path *string) (locationObj, error) {
 	// add to cache
 	c.cache.Add(currentURL, body)
 
-	return unmarshalBody(body)
-}
-
-func unmarshalBody(body []byte) (locationObj, error) {
-	// unmarshal the raw data into the `locationObj` struct
+	// unmarshal and return
 	data := locationObj{}
-	errs := json.Unmarshal(body, &data)
-	if errs != nil {
-		return locationObj{}, errs
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		return locationObj{}, err
 	}
 
 	return data, nil

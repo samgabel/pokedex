@@ -6,7 +6,13 @@ import (
 	"strconv"
 )
 
-func commandMapf(cfg *Config) error {
+func commandMapf(cfg *Config, param string) error {
+	// map command does not take additional inputs
+	if param != "" {
+		fmt.Println("Run 'map' without command parameter")
+		return nil
+	}
+
 	// make a call to the pokeapi
 	data, err := cfg.PokeapiClient.GetLocations(cfg.nextLocationURL)
 	if err != nil {
@@ -31,7 +37,13 @@ func commandMapf(cfg *Config) error {
 	return nil
 }
 
-func commandMapb(cfg *Config) error {
+func commandMapb(cfg *Config, param string) error {
+	// mapb command does not take additional inputs
+	if param != "" {
+		fmt.Println("Run 'mapb' without command parameter")
+		return nil
+	}
+
 	data, err := cfg.PokeapiClient.GetLocations(cfg.previousLocationURL)
 	if err != nil {
 		return err

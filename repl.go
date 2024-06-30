@@ -45,10 +45,23 @@ func startRepl(cfg *commands.Config) {
 		}
 		inputCommand := input[0]
 
+		// handle additional input for certain commands
+		commandParameter := ""
+		if len(input) > 1 {
+			commandParameter = input[1]
+		}
+
+		// handle too many inputs
+		if len(input) > 2 {
+			fmt.Println("Too many inputs try again")
+			fmt.Println()
+			continue
+		}
+
 		// execute command
 		command, exists := commands.GetCommands()[inputCommand]
 		if exists {
-			command.Callback(cfg)
+			command.Callback(cfg, commandParameter)
 		} else {
 			fmt.Printf("%s%v%s is an invalid command", yellow, inputCommand, reset)
 			fmt.Println()
