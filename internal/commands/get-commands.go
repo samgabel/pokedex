@@ -41,5 +41,10 @@ func GetCommands() map[string]cliCommand {
 			description: "		Attempts to catch the pokemon with a pokeball, the higher the base experience the harder it is to catch",
 			Callback:    commandCatch,
 		},
+		"inspect": {
+			name:        "inspect",
+			description: "	Requires an input parameter of a pokemon, view your pokedex entry on any pokemon that you have caught so far",
+			Callback:    commandInspect,
+		},
 	}
 }
