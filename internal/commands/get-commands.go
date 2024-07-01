@@ -46,5 +46,10 @@ func GetCommands() map[string]cliCommand {
 			description: "	Requires an input parameter of a pokemon, view your pokedex entry on any pokemon that you have caught so far",
 			Callback:    commandInspect,
 		},
+		"pokedex": {
+			name:        "pokedex",
+			description: "	Views all the caught pokemon in your pokedex",
+			Callback:    commandPokedex,
+		},
 	}
 }
