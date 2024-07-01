@@ -26,6 +26,9 @@ func startRepl(cfg *commands.Config) {
 	// create new pokeapi.Client (http.Client and pokecache.Cache)
 	cfg.PokeapiClient = pokeapi.NewClient(time.Second*5, time.Minute*3)
 
+	// create a map to store "caught" pokemon for the pokedex
+	cfg.CaughtPokemon = make(map[string]pokeapi.PokemonObj)
+
 	// enter into REPL (infinite loop)
 	for {
 		fmt.Printf("%sPokedex > %s", red, reset)

@@ -36,5 +36,10 @@ func GetCommands() map[string]cliCommand {
 			description: "	Requires an input paramter of a location-area (can be found in a 'map' command), returns a list of pokemon types",
 			Callback:    commandExplore,
 		},
+		"catch": {
+			name:        "catch",
+			description: "		Attempts to catch the pokemon with a pokeball, the higher the base experience the harder it is to catch",
+			Callback:    commandCatch,
+		},
 	}
 }
