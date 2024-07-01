@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
 	"strconv"
@@ -24,9 +25,11 @@ func commandMapf(cfg *Config, param string) error {
 	cfg.previousLocationURL = data.Previous
 
 	// print page num
-	if num, err := findPageNum(cfg.nextLocationURL); err == nil {
-		fmt.Printf("(%v)\n", num)
+	num, err := findPageNum(cfg.nextLocationURL)
+	if err != nil {
+		return err
 	}
+	fmt.Printf("(%v)\n", num)
 
 	// we need to range over the slice of `Results` structs
 	// this way we can access the `.Name` field
@@ -54,9 +57,11 @@ func commandMapb(cfg *Config, param string) error {
 	cfg.previousLocationURL = data.Previous
 
 	// print page num
-	if num, err := findPageNum(cfg.nextLocationURL); err == nil {
-		fmt.Printf("(%v)\n", num)
+	num, err := findPageNum(cfg.nextLocationURL)
+	if err != nil {
+		return err
 	}
+	fmt.Printf("(%v)\n", num)
 
 	// we need to range over the slice of `Results` structs
 	// this way we can access the `.Name` field
@@ -72,6 +77,9 @@ func findPageNum(url *string) (int, error) {
 	re := regexp.MustCompile(`offset=(\d+)`)
 
 	// find the match
+	if url == nil {
+		return 0, errors.New("nil pointer dereference")
+	}
 	match := re.FindStringSubmatch(*url)
 
 	// string to int
